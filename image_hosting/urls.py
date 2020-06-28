@@ -13,14 +13,33 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+from rest_framework.permissions import AllowAny
 from rest_framework.routers import DefaultRouter
 
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+
 from image_hosting.images.views import ImageViewSet, image_expire_view
+
+
+swagger_schema_view = get_schema_view(
+   openapi.Info(
+      title='Image Hosting',
+      default_version='1.0',
+      description='',
+      terms_of_service='',
+      contact=openapi.Contact(email=''),
+      license=openapi.License(name=''),
+   ),
+   public=True,
+   permission_classes=(AllowAny,),
+)
 
 router = DefaultRouter(trailing_slash=False)
 router.register('images', ImageViewSet, basename='images')
@@ -30,5 +49,6 @@ urlpatterns = [
     path('api/auth/', include('djoser.urls.jwt')),
     path('images/<int:pk>/<int:expire_time>/<sha>', image_expire_view),
     path('api/', include(router.urls)),
+    url(r'^swagger$', swagger_schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

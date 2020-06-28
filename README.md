@@ -29,6 +29,12 @@ python manage.py migrate
 ```
 
 
+### Collect static files:
+```bash
+python manage.py collectstatic
+```
+
+
 ### Run local server:
 ```bash
 python manage.py runserver

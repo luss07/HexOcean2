@@ -40,6 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+    'djoser',
+    'drf_yasg',
+
     'image_hosting.users',
     'image_hosting.images'
 ]
@@ -122,6 +126,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+STATIC_ROOT = 'static_files/'
 STATIC_URL = '/static/'
 
 # Media
