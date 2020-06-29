@@ -9,6 +9,7 @@ from django.core.files.base import ContentFile
 from django.db import transaction
 from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from rest_framework import viewsets, mixins, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -68,11 +69,16 @@ class ImageViewSet(mixins.CreateModelMixin,
         serializer_class = self.get_serializer_class()
         serializer = serializer_class(data=request.data, context=self.get_serializer_context())
         serializer.is_valid(raise_exception=True)
-        image, expire_time_seconds = serializer.validated_data.values()
+
+        validated_data = serializer.validated_data
+        image = validated_data['image']
+        expire_time_seconds = validated_data['time_seconds']
         expire_time = int(time.time()) + expire_time_seconds
         hash_object = hashlib.sha256(f'{image.pk}{expire_time}{settings.SECRET_KEY}'.encode())
-        url_path = f'/images/{image.pk}/{expire_time}/{hash_object.hexdigest()}'
+
+        url_path = reverse('expiring-link', args=[image.pk, expire_time, hash_object.hexdigest()])
         url = request.build_absolute_uri(url_path)
+
         return Response({'expiring_image_url': url}, status=status.HTTP_201_CREATED)
 
 

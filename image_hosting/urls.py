@@ -47,7 +47,7 @@ router.register('images', ImageViewSet, basename='images')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/', include('djoser.urls.jwt')),
-    path('images/<int:pk>/<int:expire_time>/<sha>', image_expire_view),
+    path('images/<int:pk>/<int:expire_time>/<sha>', image_expire_view, name='expiring-link'),
     path('api/', include(router.urls)),
     url(r'^swagger$', swagger_schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 

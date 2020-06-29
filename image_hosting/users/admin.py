@@ -27,7 +27,5 @@ class AccountTypeThumbnailOptionInLine(admin.TabularInline):
 
 @admin.register(AccountType)
 class AccountTypeAdmin(admin.ModelAdmin):
-    fields = ('name', 'full_image_link_access', 'expiring_image_link',
-              'expiring_image_link_persistence_seconds_from',
-              'expiring_image_link_persistence_seconds_to')
+    fields = ('name', 'full_image_link_access', 'expiring_image_link',)
     inlines = [AccountTypeThumbnailOptionInLine]

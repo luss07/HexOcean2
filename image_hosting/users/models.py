@@ -6,8 +6,6 @@ class AccountType(models.Model):
     name = models.CharField(max_length=255, unique=True)
     full_image_link_access = models.BooleanField()
     expiring_image_link = models.BooleanField()
-    expiring_image_link_persistence_seconds_from = models.PositiveIntegerField(default=300)
-    expiring_image_link_persistence_seconds_to = models.PositiveIntegerField(default=30000)
 
     def __str__(self):
         return self.name

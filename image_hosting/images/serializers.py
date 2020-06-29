@@ -67,12 +67,9 @@ class CreateExpiringLinkSerializer(serializers.Serializer):
         return value
 
     def validate_time_seconds(self, value):
-        request = self.context['request']
-        user_account_type = request.user.account_type
-        min_value = user_account_type.expiring_image_link_persistence_seconds_from
-        max_value = user_account_type.expiring_image_link_persistence_seconds_to
-
-        if not min_value <= value <= max_value:
-            raise serializers.ValidationError('Value is not in allowed range.')
+        MIN_VALUE, MAX_VALUE = 300, 30000
+        if not MIN_VALUE <= value <= MAX_VALUE:
+            raise serializers.ValidationError(
+                f'Given value {value} is not in allowed range: [{MIN_VALUE}, {MAX_VALUE}].'
+            )
         return value
-
